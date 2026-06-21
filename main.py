@@ -312,19 +312,10 @@ async def song_reco(song_id: str, request: Request = None):
     to guarantee the frontend always gets a consistent {"songs": [...]}
     shape to work with.
     """
-    url = f"https://{BASE_URL}{API_STR}&api_version=4&__call=reco.getreco&pid={quote(song_id)}"
-    session.headers.update({
-        "User-Agent": USER_AGENT,
-        "Referer": "https://www.jiosaavn.com/"
-    })
-    
-    session.proxies.update(proxies)
-    
-    # Get fresh cookies
-    session.get("https://www.jiosaavn.com")
-    
+
+    url = f"https://www.jiosaavn.com/api.php?__call=reco.getreco&api_version=4&_format=json&_marker=0&ctx=wap6dot0&pid={quote(song_id)}&language=hindi
     try:
-        r = session.get(url)
+        r = requests.get(url)
         r.raise_for_status()
         data = r.json()
     except Exception as e:
