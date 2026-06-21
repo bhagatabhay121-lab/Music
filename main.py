@@ -324,7 +324,7 @@ async def song_reco(song_id: str, request: Request = None):
         r.raise_for_status()
         data = r.json()
     except Exception as e:
-        return JSONResponse({"status": "failure", "error": str(e)}, status_code=502)
+        return JSONResponse({"error": str(e)})
 
     # Normalize: bare array (the common case) OR an already-keyed dict
     # ({"songs": [...]} / {"data": [...]}), just in case JioSaavn changes
@@ -342,7 +342,8 @@ async def song_reco(song_id: str, request: Request = None):
         # Never let a decryption hiccup break an otherwise-good response.
         pass
 
-    return JSONResponse({"status": "success", "songs": songs})
+    return JSONResponse({"raw": data})
+
 
 
 @app.get("/api/album_reco")
