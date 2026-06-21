@@ -314,7 +314,7 @@ async def song_reco(song_id: str, request: Request = None):
     """
     url = f"https://{BASE_URL}{API_STR}&api_version=4&__call=reco.getreco&pid={quote(song_id)}"
     try:
-        r = requests.get(url, request=request)
+        r = requests.get(url)
         r.raise_for_status()
         data = r.json()
     except Exception as e:
