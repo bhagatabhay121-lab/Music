@@ -313,18 +313,18 @@ async def song_reco(song_id: str, request: Request = None):
     shape to work with.
     """
     url = f"https://{BASE_URL}{API_STR}&api_version=4&__call=reco.getreco&pid={quote(song_id)}"
-    headers = {'Accept': '*/*', 'User-Agent': USER_AGENT, 'Referer': 'https://www.jiosaavn.com/'}
-    proxies = {
-        "http": "http://user:pass@proxy-host:port",
-        "https": "http://user:pass@proxy-host:port",
-    }
-    if request is not None and 'preferred-language' in request.headers:
-        headers['cookie'] = f"L={request.headers['preferred-language']}"
-    else:
-        headers['cookie'] = "L=hindi%2Cenglish"
-
+    session.headers.update({
+        "User-Agent": USER_AGENT,
+        "Referer": "https://www.jiosaavn.com/"
+    })
+    
+    session.proxies.update(proxies)
+    
+    # Get fresh cookies
+    session.get("https://www.jiosaavn.com")
+    
     try:
-        r = requests.get(url, headers=headers, proxies=proxies, timeout=15)
+        r = session.get(url)
         r.raise_for_status()
         data = r.json()
     except Exception as e:
