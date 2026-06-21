@@ -313,14 +313,8 @@ async def song_reco(song_id: str, request: Request = None):
     shape to work with.
     """
     url = f"https://{BASE_URL}{API_STR}&api_version=4&__call=reco.getreco&pid={quote(song_id)}"
-    headers = {
-        'Accept': '*/*',
-        'User-Agent': "Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36",
-        'Referer': 'https://www.jiosaavn.com/',
-    }
-
     try:
-        r = requests.get(url, headers=headers, timeout=10)
+        r = requests.get(url, request=request)
         r.raise_for_status()
         data = r.json()
     except Exception as e:
