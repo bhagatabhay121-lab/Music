@@ -2,3 +2,4 @@ fastapi
 uvicorn
 requests
 pycryptodome
+yt_dlp
